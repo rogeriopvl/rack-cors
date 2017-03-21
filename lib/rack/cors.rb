@@ -49,6 +49,10 @@ module Rack
     def call(env)
       env[ORIGIN_HEADER_KEY] ||= env[ORIGIN_X_HEADER_KEY] if env[ORIGIN_X_HEADER_KEY]
 
+      if env['PATH_INFO'].start_with?('/callbar')
+        return @app.call env
+      end
+
       add_headers = nil
       if env[ORIGIN_HEADER_KEY]
         debug(env) do
